@@ -18,6 +18,14 @@ provider "helm" {
   }
 }
 
+terraform {
+  backend "s3" {
+    bucket = "go-ecommerce-state"
+    key    = "terraform.tfstate"
+    region = "eu-central-1"
+  }
+}
+
 resource "kubernetes_namespace" "observability" {
   metadata {
     name = "observability"
