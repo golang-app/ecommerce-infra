@@ -9,5 +9,5 @@ resource "helm_release" "otel-collector" {
     value = "deployment"
   }
 
-  namespace = kubernetes_namespace.observability.metadata[0].name
+  # namespace = kubernetes_namespace.observability.metadata[0].name
 }
