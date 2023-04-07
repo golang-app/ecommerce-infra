@@ -5,5 +5,5 @@ variable "kube_config" {
 
 variable "jaeger_operator_chart_version" {
   type    = string
-  default = "2.23.1"
+  default = "2.25.0"
 }
