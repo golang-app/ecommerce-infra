@@ -23,7 +23,7 @@ resource "helm_release" "grafana" {
 
   values = [
     templatefile("${path.module}/templates/grafana-values.yaml", {
-      admin_existing_secret = kubernetes_secret.grafana.metadata[0].name
+    #   admin_existing_secret = kubernetes_secret.grafana.metadata[0].name
       admin_user_key        = "admin-user"
       admin_password_key    = "admin-password"
       prometheus_svc        = "${helm_release.prometheus.name}-server"
