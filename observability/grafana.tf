@@ -1,14 +1,14 @@
-resource "kubernetes_secret" "grafana" {
-  metadata {
-    name      = "grafana"
-    namespace = var.namespace
-  }
+# resource "kubernetes_secret" "grafana" {
+#   metadata {
+#     name      = "grafana"
+#     namespace = var.namespace
+#   }
 
-  data = {
-    admin-user     = "admin"
-    admin-password = random_password.grafana.result
-  }
-}
+#   data = {
+#     admin-user     = "admin"
+#     admin-password = random_password.grafana.result
+#   }
+# }
 
 resource "random_password" "grafana" {
   length = 24
