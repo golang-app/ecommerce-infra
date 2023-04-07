@@ -1,5 +1,5 @@
 resource "helm_release" "jaeger_operator" {
-  repository = local.helm_chart_repository
+  repository = "https://jaegertracing.github.io/helm-charts"
   name       = "jaeger-operator"
   chart      = "jaeger-operator"
   version    = var.jaeger_operator_chart_version
