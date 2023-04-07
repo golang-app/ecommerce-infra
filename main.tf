@@ -27,6 +27,6 @@ terraform {
 }
 
 module "observability" {
-  source = "./observability"
+  source      = "./observability"
   kube_config = "~/.kube/config"
 }
