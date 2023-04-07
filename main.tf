@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "2.9.0"
 
     }
@@ -9,12 +9,12 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
+  config_path = var.kube_config
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config"
+    config_path = var.kube_config
   }
 }
 
@@ -32,8 +32,8 @@ resource "kubernetes_namespace" "observability" {
   }
 }
 
-resource "helm_release" "otel-collector"{
-  name       = "otel-collector"
+resource "helm_release" "otel-collector" {
+  name = "otel-collector"
 
   repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
   chart      = "opentelemetry-collector"
@@ -42,6 +42,6 @@ resource "helm_release" "otel-collector"{
     name  = "mode"
     value = "deployment"
   }
-  
-    namespace = kubernetes_namespace.observability.metadata[0].name
+
+  namespace = kubernetes_namespace.observability.metadata[0].name
 }
