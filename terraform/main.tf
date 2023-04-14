@@ -8,6 +8,10 @@ terraform {
   }
 }
 
+provider "oci" {
+  region = var.region
+}
+
 provider "kubernetes" {
   config_path = var.kube_config
 }
@@ -29,4 +33,10 @@ terraform {
 module "observability" {
   source      = "./observability"
   kube_config = "~/.kube/config"
+}
+
+module "k8scluster" {
+  source      = "./k8scluster"
+  compartment_id = var.compartment_id
+  region = var.region
 }
