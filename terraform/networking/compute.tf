@@ -1,7 +1,7 @@
 
 resource "oci_core_instance" "cp_instances" {
   count               = var.no_control_planes
-  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index], "name")
+  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index+1], "name")
   compartment_id      = var.compartment_id
   display_name        = "cp-${count.index}"
   shape               = "VM.Standard.A1.Flex"
@@ -27,14 +27,14 @@ resource "oci_core_instance" "cp_instances" {
   }
 
   metadata = {
-    "ssh_authorized_keys" = file("${path.module}/../kubernetes_ssh_rsa.pub")
+    "ssh_authorized_keys" = tls_private_key.ssh.public_key_openssh
   }
 
   connection {
     type        = "ssh"
     user        = "ubuntu"
     host        = self.public_ip
-    private_key = file("${path.module}/../kubernetes_ssh_rsa")
+    private_key = tls_private_key.ssh.private_key_openssh
   }
 
   provisioner "remote-exec" {
@@ -46,7 +46,7 @@ resource "oci_core_instance" "cp_instances" {
 
 resource "oci_core_instance" "worker_instances" {
   count               = var.no_workers
-  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index], "name")
+  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index+1], "name")
   compartment_id      = var.compartment_id
   display_name        = "worker-${count.index}"
   shape               = "VM.Standard.A1.Flex"
@@ -73,19 +73,23 @@ resource "oci_core_instance" "worker_instances" {
   }
 
   metadata = {
-    "ssh_authorized_keys" = file("${path.module}/../kubernetes_ssh_rsa.pub")
+    "ssh_authorized_keys" = tls_private_key.ssh.public_key_openssh
   }
 
   connection {
     type        = "ssh"
     user        = "ubuntu"
     host        = self.public_ip
-    private_key = file("${path.module}/../kubernetes_ssh_rsa")
+    private_key = tls_private_key.ssh.private_key_openssh
   }
 
   provisioner "remote-exec" {
     inline = [
       "sudo ufw allow from 10.240.0.0/24;sudo iptables -A INPUT -i ens3 -s 10.240.0.0/24 -j ACCEPT;sudo iptables -F",
+      "echo \"${tls_self_signed_cert.ca.cert_pem}\" > ca.pem",
     ]
   }
+
+  depends_on = [
+  ]
 }
