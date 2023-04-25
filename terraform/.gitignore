@@ -1,3 +1,9 @@
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
+
+ca-key.pem
+
+*-key.pem
+*.kubeconfig
+*.pem
