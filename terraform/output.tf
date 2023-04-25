@@ -7,6 +7,6 @@ output "control_plane_ips" {
 }
 
 output "ssh_private_key" {
-  value = module.k8scluster.ssh_private_key
+  value     = module.k8scluster.ssh_private_key
   sensitive = true
 }
