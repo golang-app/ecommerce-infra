@@ -13,5 +13,5 @@ variable "no_control_planes" {
 
 variable "no_workers" {
   type    = number
-  default = 1
+  default = 2
 }
