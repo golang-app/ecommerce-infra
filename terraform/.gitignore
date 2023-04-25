@@ -7,3 +7,6 @@ ca-key.pem
 *-key.pem
 *.kubeconfig
 *.pem
+
+tfplan.binary
+plan.json
