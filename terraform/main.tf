@@ -2,8 +2,8 @@ provider "oci" {
   region = var.region
 }
 
-module "networking" {
-  source         = "./networking"
+module "k8scluster" {
+  source         = "./k8scluster"
   compartment_id = var.compartment_id
   region         = var.region
 }

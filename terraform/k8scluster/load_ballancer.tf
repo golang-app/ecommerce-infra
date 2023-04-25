@@ -1,6 +1,8 @@
+# TODO: use nginx as a load balancer and run it on a separate instance
+
 resource "oci_load_balancer_load_balancer" "load_balancer" {
   compartment_id = var.compartment_id
-  display_name   = "kubernetes-the-hard-way"
+  display_name   = "k8s-cluster"
   shape          = "100Mbps"
   subnet_ids     = [oci_core_subnet.subnet.id]
 }

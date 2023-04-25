@@ -1,4 +1,4 @@
-
+# maybe use oci_core_instance_pool instead of oci_core_instance?
 resource "oci_core_instance" "cp_instances" {
   count               = var.no_control_planes
   availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index+1], "name")
@@ -22,7 +22,7 @@ resource "oci_core_instance" "cp_instances" {
   }
 
   freeform_tags = {
-    "project" = "kubernetes-the-hard-way"
+    "project" = "k8s-cluster"
     "role"    = "controller"
   }
 
@@ -44,6 +44,7 @@ resource "oci_core_instance" "cp_instances" {
   }
 }
 
+# maybe use oci_core_instance_pool instead of oci_core_instance?
 resource "oci_core_instance" "worker_instances" {
   count               = var.no_workers
   availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index+1], "name")
@@ -67,7 +68,7 @@ resource "oci_core_instance" "worker_instances" {
   }
 
   freeform_tags = {
-    "project"  = "kubernetes-the-hard-way"
+    "project"  = "k8s-cluster"
     "role"     = "worker"
     "pod-cidr" = "10.200.${count.index}.0/24"
   }
@@ -75,21 +76,4 @@ resource "oci_core_instance" "worker_instances" {
   metadata = {
     "ssh_authorized_keys" = tls_private_key.ssh.public_key_openssh
   }
-
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    host        = self.public_ip
-    private_key = tls_private_key.ssh.private_key_openssh
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo ufw allow from 10.240.0.0/24;sudo iptables -A INPUT -i ens3 -s 10.240.0.0/24 -j ACCEPT;sudo iptables -F",
-      "echo \"${tls_self_signed_cert.ca.cert_pem}\" > ca.pem",
-    ]
-  }
-
-  depends_on = [
-  ]
 }

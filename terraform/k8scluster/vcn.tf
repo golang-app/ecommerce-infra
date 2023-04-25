@@ -2,20 +2,20 @@ resource "oci_core_virtual_network" "vcn" {
   cidr_block     = "10.240.0.0/24"
   dns_label      = "vcn"
   compartment_id = var.compartment_id
-  display_name   = "kubernetes-the-hard-way"
+  display_name   = "k8s-cluster"
 }
 
 resource "oci_core_internet_gateway" "internet_gateway" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_virtual_network.vcn.id
-  display_name   = "kubernetes-the-hard-way"
+  display_name   = "k8s-cluster"
 }
 
 resource "oci_core_route_table" "route_table" {
   compartment_id = var.compartment_id
   vcn_id         = oci_core_virtual_network.vcn.id
 
-  display_name = "kubernetes-the-hard-way"
+  display_name = "k8s-cluster"
   route_rules {
     network_entity_id = oci_core_internet_gateway.internet_gateway.id
     destination       = "0.0.0.0/0"

@@ -1,0 +1,4 @@
+## Requrements
+
+* terraform
+* kubectl
