@@ -224,7 +224,7 @@ resource "local_file" "ca_key" {
 
 resource "local_file" "ca_cert" {
   content  = tls_self_signed_cert.ca.cert_pem
-  filename = "ca-key.pem"
+  filename = "ca.pem"
 }
 
 resource "local_file" "worker_cert" {
