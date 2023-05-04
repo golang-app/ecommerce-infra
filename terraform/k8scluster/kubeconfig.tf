@@ -1,5 +1,5 @@
 resource "null_resource" "worker_kubeconfig_set_cluster" {
-  count           = var.no_workers
+  count = var.no_workers
 
   provisioner "local-exec" {
     command = "kubectl config set-cluster k8s-cluster --certificate-authority=ca.pem --embed-certs=true --server=https://${oci_load_balancer_load_balancer.load_balancer.ip_address_details.0.ip_address}:6443 --kubeconfig=worker-${count.index}.kubeconfig"
@@ -11,7 +11,7 @@ resource "null_resource" "worker_kubeconfig_set_cluster" {
 }
 
 resource "null_resource" "worker_kubeconfig_set_credentials" {
-  count           = var.no_workers
+  count = var.no_workers
 
   provisioner "local-exec" {
     command = <<EOF

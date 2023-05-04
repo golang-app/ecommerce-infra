@@ -1,7 +1,7 @@
 # maybe use oci_core_instance_pool instead of oci_core_instance?
 resource "oci_core_instance" "cp_instances" {
   count               = var.no_control_planes
-  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index+1], "name")
+  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index + 1], "name")
   compartment_id      = var.compartment_id
   display_name        = "cp-${count.index}"
   shape               = "VM.Standard.A1.Flex"
@@ -47,7 +47,7 @@ resource "oci_core_instance" "cp_instances" {
 # maybe use oci_core_instance_pool instead of oci_core_instance?
 resource "oci_core_instance" "worker_instances" {
   count               = var.no_workers
-  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index+1], "name")
+  availability_domain = lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[count.index + 1], "name")
   compartment_id      = var.compartment_id
   display_name        = "worker-${count.index}"
   shape               = "VM.Standard.A1.Flex"

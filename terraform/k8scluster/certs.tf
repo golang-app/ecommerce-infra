@@ -71,7 +71,7 @@ resource "tls_cert_request" "worker" {
 
 # send certificates to the control plane nodes
 resource "null_resource" "tls_control_plane_cert" {
-  count           = var.no_control_planes
+  count = var.no_control_planes
 
   triggers = {
     cert_request_pem = tls_self_signed_cert.ca.cert_pem
@@ -101,11 +101,11 @@ resource "null_resource" "tls_control_plane_cert" {
 
 # send certificates to the worker nodes
 resource "null_resource" "tls_worker_cert" {
-  count           = var.no_workers
+  count = var.no_workers
 
   triggers = {
     cert_request_pem = tls_cert_request.worker[count.index].cert_request_pem
-    private_key_pem = tls_cert_request.worker[count.index].private_key_pem
+    private_key_pem  = tls_cert_request.worker[count.index].private_key_pem
   }
 
   connection {
@@ -129,8 +129,8 @@ resource "tls_cert_request" "kube-controller-manager" {
   private_key_pem = tls_private_key.ca.private_key_pem
 
   subject {
-    common_name  = "Kubernetes"
-    organization = "system:kube-controller-manager"
+    common_name         = "Kubernetes"
+    organization        = "system:kube-controller-manager"
     organizational_unit = "Kubernetes Cluster"
   }
 
@@ -144,8 +144,8 @@ resource "tls_cert_request" "kube-proxy" {
   private_key_pem = tls_private_key.ca.private_key_pem
 
   subject {
-    common_name  = "Kubernetes"
-    organization = "system:node-proxier"
+    common_name         = "Kubernetes"
+    organization        = "system:node-proxier"
     organizational_unit = "Kubernetes Cluster"
   }
 
@@ -159,8 +159,8 @@ resource "tls_cert_request" "kube-scheduler" {
   private_key_pem = tls_private_key.ca.private_key_pem
 
   subject {
-    common_name  = "Kubernetes"
-    organization = "system:kube-scheduler"
+    common_name         = "Kubernetes"
+    organization        = "system:kube-scheduler"
     organizational_unit = "Kubernetes Cluster"
   }
 
@@ -174,8 +174,8 @@ resource "tls_cert_request" "kube-api-server" {
   private_key_pem = tls_private_key.ca.private_key_pem
 
   subject {
-    common_name  = "Kubernetes"
-    organization = "Kubernetes"
+    common_name         = "Kubernetes"
+    organization        = "Kubernetes"
     organizational_unit = "Kubernetes Cluster"
   }
 
@@ -205,8 +205,8 @@ resource "tls_cert_request" "service-accounts" {
   private_key_pem = tls_private_key.ca.private_key_pem
 
   subject {
-    common_name  = "Kubernetes"
-    organization = "system:service-accounts"
+    common_name         = "Kubernetes"
+    organization        = "system:service-accounts"
     organizational_unit = "Kubernetes Cluster"
   }
 
@@ -224,7 +224,7 @@ resource "local_file" "ca_key" {
 
 resource "local_file" "ca_cert" {
   content  = tls_self_signed_cert.ca.cert_pem
-  filename = "ca-key.pem"
+  filename = "ca.pem"
 }
 
 resource "local_file" "worker_cert" {
